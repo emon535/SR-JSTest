@@ -32,7 +32,7 @@ export default function App() {
       <form onSubmit={handleSubmit}>
         <label>
           <input
-            type="text"
+            type="number"
             placeholder="Insert a number between 1-100"
             value={input}
             onChange={e => setInput(e.target.value)}
