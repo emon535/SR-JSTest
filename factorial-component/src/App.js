@@ -16,9 +16,13 @@ export default function App() {
     let factorialValue = 0;
     event.preventDefault();
     if (input > 100) {
-      setStatus("The input is too big. [ Range 1-100 ]");
+      setStatus("The input is too big. [ Range 0-100 ]");
+      setFactorial(0);
+    } else if (input < 0) {
+      setStatus("The input is too small. [ Range 0-100 ]");
       setFactorial(0);
     } else {
+      setStatus("");
       factorialValue = getFactorial(input);
       setFactorial(factorialValue);
     }
@@ -32,14 +36,16 @@ export default function App() {
         <label>
           <input
             type="text"
-            placeholder="0 - 100"
+            placeholder="Insert a number between 1-100"
             value={input}
             onChange={e => setInput(e.target.value)}
           />
         </label>
         <input type="submit" value="Submit" />
       </form>
-      <p>Factorial: {factorial}</p>
+      <p>
+        <b>Factorial: {factorial}</b>
+      </p>
     </div>
   );
 }
