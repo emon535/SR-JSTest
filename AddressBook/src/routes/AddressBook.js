@@ -13,20 +13,15 @@ route.post("/contact/new", (req, res) => {
   let model = new PersonModel(req.body);
   console.log("Model", model);
 
-  model.save(function(err) {
-    if (err) return handleError(err);
-    // saved!
-  });
-
-  //   model
-  //     .save()
-  //     .then(doc => {
-  //       console.log("Then", doc);
-  //       res.status(201).send(doc);
-  //     })
-  //     .catch(err => {
-  //       res.status(500).json(err);
-  //     });
+  model
+    .save()
+    .then(doc => {
+      console.log("Then", doc);
+      res.status(201).send(doc);
+    })
+    .catch(err => {
+      res.status(500).json(err);
+    });
 
   console.log("Data Saved");
 });

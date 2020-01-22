@@ -6,7 +6,8 @@ const user = "emon535";
 const password = "lokomono";
 const db = mongoose.connection;
 
-const dbPath = "mongodb://emon535:lokomono//@ds211709.mlab.com:11709/emon-mlab";
+const dbPath = "mongodb://emon535:emon1234@ds211709.mlab.com:11709/emon-mlab";
+
 mongoose.connect(dbPath);
 
 db.on("error", () => {
