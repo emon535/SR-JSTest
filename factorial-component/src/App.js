@@ -6,8 +6,6 @@ export default function App() {
   const [factorial, setFactorial] = useState(0);
   const [status, setStatus] = useState("");
 
-  // Calculated the factorial number.
-
   // handled the button click event
   const handleSubmit = event => {
     let factorialValue = 0;
@@ -46,6 +44,8 @@ export default function App() {
     </div>
   );
 }
+
+// Calculated the factorial number.
 
 function getFactorial(input) {
   if (input == 0) {
