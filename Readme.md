@@ -16,5 +16,5 @@
 - Change the directory to "Address-Book"
 - Open console and type "npm install"
 - Once all the dependency is installed, type "npm run start-watch"
-- Check the localhost:8080 port in your browser
+- Check the localhost:8080/status port in your browser
 - API Documentation : [See postman documentation](https://documenter.getpostman.com/view/3844660/SWT7DLFR?version=latest)
