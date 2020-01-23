@@ -9,8 +9,8 @@ route.get("/status", (req, res) => {
 
 route.post(
   "/contact",
-  [check("mobile").isMobilePhone(), check("mobile").isLength(11)],
-  (req, res) => {
+  [check("mobile").isMobilePhone(), check("mobile").isLength(11)], 
+  async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(422).json({
@@ -21,58 +21,61 @@ route.post(
 
     if (!req.body) return res.status(400).send("Request body is missing");
 
-    let model = new PersonModel(req.body);
-    model
+    let model = await new PersonModel(req.body);
+    
+    try {
+      const doc = model
       .save()
       .then(doc => {
-        console.log("Then", doc);
         res.status(201).send(doc);
       })
-      .catch(err => {
-        res.status(500).json(err);
-      });
 
+    } catch (error) {
+      res.status(500).json(error);
+    }
     console.log("Data Saved");
   }
 );
 
-route.get("/contacts", (req, res) => {
+route.get("/contacts", async (req, res) => {
   if (!req.body) return res.status(400).send("Request body is missing");
-  PersonModel.find()
-    .then(doc => {
-      res.json(doc);
-    })
-    .catch(err => {
-      res.status(500).json(err);
-    });
+  
+  const doc = await PersonModel.find();
+
+  try {
+    res.json(doc);
+  } catch (error) {
+    res.status(500).json(error);
+  }
 });
 
-route.get("/contact/:mobile", (req, res) => {
+route.get("/contact/:mobile", async (req, res) => {
   if (!req.params.mobile) {
     return res.status(400).send("URL Parameter missing: phone number");
   }
 
-  PersonModel.findOne({
+  const doc  = await PersonModel.findOne({
     mobile: req.params.mobile
-  })
-    .then(doc => {
-      res.json(doc);
-    })
-    .catch(err => {
-      res.status(500).json(err);
-    });
+  });
+
+  try {
+    res.json(doc);
+  } catch (error) {
+    
+    res.status(500).json(error);
+  }
 });
 
 
 
-route.put("/contact/:mobile", (req, res) => {
+route.put("/contact/:mobile", async (req, res) => {
   if (!req.params.mobile) {
     return res.status(400).send("URL Parameter missing: Mobile number");
   }
 
   try {
     
-  const doc = PersonModel.findOneAndUpdate(
+  const doc =await PersonModel.findOneAndUpdate(
     {
       mobile: req.params.mobile
     },
@@ -83,7 +86,7 @@ route.put("/contact/:mobile", (req, res) => {
   )
   res.json(doc);
   } catch (error) {
-    res.status(500).json(err);
+    res.status(500).json(error);
   }
 });
 
@@ -96,7 +99,7 @@ route.delete("/contact/:mobile",  async (req, res) => {
       const doc = await PersonModel.findOneAndRemove({
         mobile: req.params.mobile
       })
-      res.json("Deleted");
+      res.json("Deleted Successfully");
     } catch (error) {
       res.status(500).json(error);
     }
