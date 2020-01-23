@@ -21,16 +21,13 @@ route.post(
 
     if (!req.body) return res.status(400).send("Request body is missing");
 
-    let model = await new PersonModel(req.body);
+    let model = new PersonModel(req.body);
+    const doc = await model.save();
     
     try {
-      const doc = model
-      .save()
-      .then(doc => {
         res.status(201).send(doc);
-      })
-
-    } catch (error) {
+    } 
+    catch (error) {
       res.status(500).json(error);
     }
     console.log("Data Saved");
