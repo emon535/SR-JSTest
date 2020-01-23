@@ -47,13 +47,13 @@ route.get("/contacts", (req, res) => {
     });
 });
 
-route.get("/contact", (req, res) => {
-  if (!req.query.mobile) {
+route.get("/contact/:mobile", (req, res) => {
+  if (!req.params.mobile) {
     return res.status(400).send("URL Parameter missing: phone number");
   }
 
   PersonModel.findOne({
-    mobile: req.query.mobile
+    mobile: req.params.mobile
   })
     .then(doc => {
       res.json(doc);
@@ -63,42 +63,44 @@ route.get("/contact", (req, res) => {
     });
 });
 
-route.put("/contact", (req, res) => {
-  if (!req.query.mobile) {
-    return res.status(400).send("URL Parameter missing: phone number");
+
+
+route.put("/contact/:mobile", (req, res) => {
+  if (!req.params.mobile) {
+    return res.status(400).send("URL Parameter missing: Mobile number");
   }
 
-  PersonModel.findOneAndUpdate(
+  try {
+    
+  const doc = PersonModel.findOneAndUpdate(
     {
-      mobile: req.query.mobile
+      mobile: req.params.mobile
     },
     req.body,
     {
       new: true
     }
   )
-    .then(doc => {
-      res.json(doc);
-    })
-    .catch(err => {
-      res.status(500).json(err);
-    });
+  res.json(doc);
+  } catch (error) {
+    res.status(500).json(err);
+  }
 });
 
-route.delete("/contact", (req, res) => {
-  if (!req.query.mobile) {
+route.delete("/contact/:mobile",  async (req, res) => {
+  if (!req.params.mobile) {
     return res.status(400).send("URL Parameter missing: phone number");
   }
 
-  PersonModel.findOneAndRemove({
-    mobile: req.query.mobile
-  })
-    .then(doc => {
-      res.json("Deleted Successfully");
-    })
-    .catch(err => {
-      res.status(500).json(err);
-    });
+  try {
+      const doc = await PersonModel.findOneAndRemove({
+        mobile: req.params.mobile
+      })
+      res.json("Deleted");
+    } catch (error) {
+      res.status(500).json(error);
+    }
+
 });
 
 module.exports = route;
